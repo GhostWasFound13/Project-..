@@ -1,29 +1,18 @@
-class StarcordError extends Error {
-  constructor(message: string, code?: number, method?: string, url?: string) {
-    super(message);
-    this.name = 'StarcordError';
-    this.code = code;
-    this.method = method;
-    this.url = url;
+export class clientError {
+  static apiError(msg: string, url: string, route: string, status: number, method: string) {
+    const error = new Error(msg);
+    error.name = 'clientError -> [DiscordError]';
+    error.url = url;
+    error.route = route;
+    error.code = status;
+    error.method = method;
+    throw error;
   }
 
-  code?: number;
-  method?: string;
-  url?: string;
-}
-
-class ApiError extends StarcordError {
-  constructor(message: string, code?: number, method?: string, url?: string) {
-    super(message, code, method, url);
-    this.name = 'ApiError';
+  static WebSocketError(msg: string, code: number) {
+    const error = new Error(msg);
+    error.name = 'clientError -> [WebSocketError]';
+    error.code = code;
+    throw error;
   }
 }
-
-class WebsocketError extends StarcordError {
-  constructor(message: string, code?: number, method?: string, url?: string) {
-    super(message, code, method, url);
-    this.name = 'WebsocketError';
-  }
-}
-
-export { StarcordError, ApiError, WebsocketError };
